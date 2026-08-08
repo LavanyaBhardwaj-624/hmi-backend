@@ -1,0 +1,91 @@
+const machineFieldMap = {
+    "Boiler Unit": ["Temperature", "Pressure", "Water Level"],
+    "Conveyor Belt": ["Speed", "Load", "Vibration", "Motor Temp"],
+    "Packaging Line": ["Temperature", "Pressure", "Speed", "Load", "Vibration"]
+};
+
+
+"ALARM_CONFIG" :{
+  "Boiler Unit": {
+    "Temperature": { unit: "°C", high: "High Temperature", low: "Low Temperature" },
+    "Pressure": { unit: "PSI", high: "High Steam Pressure", low: "Low Steam Pressure" },
+    "Water Level": { unit: "%", high: "High Water Level", low: "Low Water Level" },
+  },
+  conveyor_belt: {
+    "Speed": { unit: "m/min", high: "Belt Running Too Fast", low: "Belt Running Too Slow" },
+    "Load": { unit: "kg", high: "Overload Detected" },
+    "Vibration": { unit: "mm/s", high: "Abnormal Vibration" },
+    "Motor Temp": { unit: "°C", high: "Motor Overheating" },
+  },
+  packaging_line: {
+    "Temperature": { unit: "°C", high: "High Temperature", low: "Low Temperature" },
+    "Pressure": { unit: "bar", high: "High Line Pressure", low: "Low Line Pressure" },
+    "Speed": { unit: "units/min", high: "Line Running Too Fast", low: "Line Running Too Slow" },
+    "Load": { unit: "kg", high: "Overload Detected" },
+    "Vibration": { unit: "mm/s", high: "Abnormal Vibration" },
+  },
+};
+
+"CRITICAL_WARNING_CONFIG": {
+  "Boiler Unit": {
+    "Temperature": { 
+      unit: "°C", 
+      highCritical: "Temperature Rising - Cool Down Soon", 
+      lowCritical: "Temperature Dropping - Stabilize Heating" 
+    },
+    "Pressure": { 
+      unit: "PSI", 
+      highCritical: "Steam Pressure Rising - Release Pressure", 
+      lowCritical: "Steam Pressure Falling - Check Supply" 
+    },
+    "Water Level": { 
+      unit: "%", 
+      highCritical: "Water Level Increasing - Adjust Feed", 
+      lowCritical: "Water Level Dropping - Refill Required" 
+    },
+  },
+  conveyor_belt: {
+    "Speed": { 
+      unit: "m/min", 
+      highCritical: "Speed Approaching Limit - Slow Down", 
+      lowCritical: "Speed Too Low - Increase Flow" 
+    },
+    "Load": { 
+      unit: "kg", 
+      highCritical: "Load Near Limit - Reduce Input" 
+    },
+    "Vibration": { 
+      unit: "mm/s", 
+      highCritical: "Vibration Increasing - Inspect Early" 
+    },
+    "Motor Temp": { 
+      unit: "°C", 
+      highCritical: "Motor Temperature Rising - Cool Down" 
+    },
+  },
+  packaging_line: {
+    "Temperature": { 
+      unit: "°C", 
+      highCritical: "Line Temperature Rising - Cool Down", 
+      lowCritical: "Line Temperature Dropping - Stabilize Heating" 
+    },
+    "Pressure": { 
+      unit: "bar", 
+      highCritical: "Line Pressure Rising - Stabilize", 
+      lowCritical: "Line Pressure Dropping - Check Supply" 
+    },
+    "Speed": { 
+      unit: "units/min", 
+      highCritical: "Speed Approaching Limit - Adjust Flow", 
+      lowCritical: "Speed Too Low - Increase Throughput" 
+    },
+    "Load": { 
+      unit: "kg", 
+      highCritical: "Load Near Threshold - Reduce Input" 
+    },
+    "Vibration": { 
+      unit: "mm/s", 
+      highCritical: "Vibration Increasing - Inspect Early" 
+    },
+  },
+};
