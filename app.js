@@ -38,14 +38,20 @@ io.on("connection" , (socket) => {
 });
 
 const authroutes = require('./routers/account.routers.js');
-
 app.use("/api/auth" , authroutes);
+
 const dashboardroutes = require('./routers/dashboard.routers.js')
 app.use('/api/dashboard' ,  dashboardroutes);
+
 const machinesroutes = require('./routers/machines.routers.js')
-app.use('/api/machines' , machinesroutes)
+app.use('/api/machines' , machinesroutes);
+
 const alarmrouters = require('./routers/alarm.routers.js')
 app.use('/api/alarms' , alarmrouters)
+
+const profileRoutes = require('./routers/profile.router.js');
+app.use('/api/profiles' , profileRoutes);
+
 async function connections(){
 
     try{
@@ -60,7 +66,7 @@ async function connections(){
          server.listen(port, () => {
            console.log(`Server running on port ${port}`);
 
-            setTimeout(async () => {
+            setInterval(async () => {
               try {
                 await backgroundjob();
               } catch (err) {
