@@ -38,8 +38,9 @@ const userSchema = new mongoose.Schema(
     isComplete:{
       type: Boolean,
       required:true,
-      default:false // true only if company is added if role is admin.
-    }
+      default:false 
+    },
+
   },
   { timestamps: true }
 );

@@ -11,8 +11,8 @@ require('dotenv').config();
 
 
 app.use(cors({
-  origin: "http://localhost:5173",   // explicitly allow your frontend
-  credentials: true                  // allow cookies/auth headers
+  origin: "http://localhost:5173",  
+  credentials: true                  
 }));
 app.use( express.json());
 app.use(cookieParser())
@@ -26,7 +26,6 @@ const io = new Server(server, {
   }
 });
 
-// 👇 make io available globally (simple way)
 app.set("io", io);
 
 io.on("connection" , (socket) => {
@@ -80,18 +79,3 @@ async function connections(){
 }
 connections();
 
-/**
- * 
- * import { createClient } from 'redis';
-
-const client = createClient({
-    username: 'default',
-    password: '',
-    socket: {
-        host: '',
-        port:
-    }
-});
-
-client.on('error', err => console.log('Redis Client Error', err));
- */
