@@ -41,7 +41,8 @@ async function CreateCompany( req , res ){
      const company = await Company.create({
         ...req.body,
           createdBy: UserId,
-          companyId: `COMP-${Date.now()}`
+          companyId: `COMP-${Date.now()}`,
+          adminId: UserId,
      })
      
      const newToken = jwt.sign({id: UserId , companyId: company._id} , process.env.Private_key, {

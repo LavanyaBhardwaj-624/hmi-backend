@@ -123,18 +123,16 @@ async function  addalarms( machine, currentdata){
     return;
     }
     const threshold = thresholdObject.thresholds;
-    // console.log(threshold)
+  
    for (const key of threshold.keys()){
 
       const limits =  threshold.get(key);
 
-      /**companyId , machineId , machineType, field , message, actualValue, threshold,status ,
-        acknowledgedBy, severity, direction, 
-      */ 
+  
        console.log(key , limits)
       const value = currentdata[key];
       const obj = getBreach(value , machine.machineType , key , limits);
-      // console.log(obj)
+      
       if(obj === null ){
         const findalarm = await alarmModel.findOneAndUpdate({ 
         companyId: machine.companyId, 
@@ -176,7 +174,7 @@ async function  addalarms( machine, currentdata){
           setDefaultsOnInsert: true
        })
     }
-        // console.log(`alarm successsfully added`)
+        
       }catch(err){
            console.log(`alarm couldn't  be add : ${err.message}`)
       }

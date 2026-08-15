@@ -71,12 +71,13 @@ async function CreateOperator(req , res){
       password: hashedPassword,
       name,
       role,
+      isComplete: true,
       companyId: company._id,
     });
   
 
     const token = jwt.sign(
-      { id: user._id , company_id: company._id },
+      { id: user._id , companyId: company._id },
       process.env.Private_key,
       { expiresIn: "1h" }
     );
@@ -90,7 +91,7 @@ async function CreateOperator(req , res){
     return res.status(201).json({
       success: true,
       message: "User created successfully",
-      redirectto: "/operatordashboard",
+      redirectto: "/OperatorLandingPage",
     }); 
 
   } catch (err) {
@@ -159,7 +160,7 @@ async function Login(req, res) {
         return res.status(200).json({
            description: "Ok",
             message: "Login Successfully",
-            redirectto: "/OperatorDashboard",
+            redirectto: "/OperatorLandingPage",
         })
     }
 

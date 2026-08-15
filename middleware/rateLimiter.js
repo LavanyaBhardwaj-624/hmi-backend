@@ -10,7 +10,7 @@ async function ratelimiter(req , res , next){
     const requests = await client.incr(ip)
 
     if( Number(requests) >= 10 ){
-        return res.status(401).json({
+        return res.status(429).json({
             message: 'request limit reached'
         })
     }

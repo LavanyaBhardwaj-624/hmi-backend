@@ -22,15 +22,14 @@ async function Save(req ,res){
         
         if(!data){
             return res.status(400).json({
-                message: ' Bad Input'
+                message: 'Bad Input'
             })
         }
         const alarms = await alarmModel.find({ companyId : companyId})
 
-             
         if(!alarms){
             return res.status(400).json({
-                message: ' Bad Input'
+                message: 'Bad Input'
             })
         }
     return res.status(200).json({

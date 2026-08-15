@@ -51,6 +51,7 @@ app.use('/api/alarms' , alarmrouters)
 const profileRoutes = require('./routers/profile.router.js');
 app.use('/api/profiles' , profileRoutes);
 
+
 async function connections(){
 
     try{
@@ -65,7 +66,7 @@ async function connections(){
          server.listen(port, () => {
            console.log(`Server running on port ${port}`);
 
-            setInterval(async () => {
+           setTimeout(async () => {
               try {
                 await backgroundjob();
               } catch (err) {

@@ -10,28 +10,6 @@ async function getalarms( req , res){
     try{
     const alarms = await alarmModel.find({ companyId: companyId}).populate("machineId");
    
-    // const categorizedAlarms = {
-    //     all: alarms,
-    //     active: [],
-    //     acknowledged: [],
-    //     resolved: [],
-    //  };
-
-    //    alarms.forEach((alarm) => {
-    //        if (categorizedAlarms[alarm.status]) {
-    //          categorizedAlarms[alarm.status].push(alarm);
-    //        }
-    //     });
-
-    // const Severity_Categorized = {
-    //     all: alarms,
-    //     warning: [],
-    //     critical: []
-    // }
-    // alarms.forEach((alarm) => {
-    //     Severity_Categorized[alarm.severity].push(alarm);
-    // })
-
     return res.status(200).json({
         message: "success",
         data:alarms

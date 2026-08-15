@@ -12,6 +12,11 @@ const companySchema = new mongoose.Schema(
       ref: "User",
       required: [true , "A admin must be present to register a company"],
     },
+    adminId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     selectedMachineTypes: [
       {
         type: String,
@@ -40,6 +45,10 @@ const companySchema = new mongoose.Schema(
     type: String,
     required: true
     },
+    comapnyTochange:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+    }
   },
   { timestamps: true }
 );

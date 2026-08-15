@@ -1,5 +1,6 @@
 const Machine = require("../../models/machine.model.js");
 const AlarmEvent = require("../../models/alarm.model.js");
+const AdminNotification = require("../../models/AdminNotification.js");
 
 async function getDashboard(req, res) {
   try {
@@ -7,15 +8,12 @@ async function getDashboard(req, res) {
 
     //  const io = req.app.get("io"); //io instance
 
-    // 1️⃣ Machines
+    //  Machines
     const machines = await Machine.find({ companyId: companyId });
-    
-   
     
     const totalMachines = machines.length;
   
 
-    // Simulated status (later replace with real PLC data)
     let running = 0;
     let stopped = 0;
 
@@ -24,7 +22,7 @@ async function getDashboard(req, res) {
       else stopped++;
     });
 
-    // 2️⃣ Active alarms
+    // Active alarms
     const activeAlarms = await AlarmEvent.find({
       companyId,
       status: "active"
@@ -32,7 +30,7 @@ async function getDashboard(req, res) {
       .sort({ createdAt: -1 })
       .limit(5);
 
-    // 3️⃣ Stats
+    // Stats
     const alarmCount = activeAlarms.length;
 
     // telemetry: --
@@ -40,17 +38,28 @@ async function getDashboard(req, res) {
       machineName: m.machineName,
       state: m.isActive ? "Running" : "Stopped"
     }));
-
+    
+    const Notify = await AdminNotification.findOne({ 
+      adminId: req.user._id,
+      status: "PENDING",
+    })
+    let HasNotification = Notify ? true : false;
     const resData =  {
       stats: {
         totalMachines,
         running,
         stopped,
-        alarms: alarmCount
+        alarms: alarmCount,
+        
       },
       machines,
       alarms: activeAlarms,
-      telemetry
+      telemetry,
+      HasNotification,
+      UserDetails:{
+      name: req.user.name,
+      role: req.user.role,
+      }
     };
 
 

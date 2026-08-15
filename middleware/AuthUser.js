@@ -13,7 +13,8 @@ async function Authuser( req , res , next){
     if(!token){
         return res.status(401).json({
             description: "Unauthorized access",
-            message: "First Login to view this page"
+            message: "Token not Found , Please Login Again",
+            redirectto: "AuthFailed"
         })
     }
     try{
@@ -22,7 +23,8 @@ async function Authuser( req , res , next){
            if(isBlocked){
             return res.status(401).json({
             description: "Unauthorized access",
-            message: "token is not valid"
+            message: "Token is not valid , Please Login again",
+            redirectto: "AuthFailed"
           })
          }
 
@@ -36,7 +38,7 @@ async function Authuser( req , res , next){
         if(!user){
             return res.status(404).json({
             description: "Not Found",
-            message: "User Not Found"
+            message: "User Not Found."
         })
         }
         req.user = user;
@@ -47,7 +49,7 @@ async function Authuser( req , res , next){
         if(!company){
             return res.status(404).json({
             description: "Not Found",
-            message: "Company Not Found"
+            message: "Either Your Company has been Deleted Or it may not be registered."
         })
         }
         req.company = company;
@@ -57,7 +59,8 @@ async function Authuser( req , res , next){
     if (err.name === "TokenExpiredError" || err.name === "JsonWebTokenError") {
         return res.status(401).json({
             description: "Unauthorized access",
-            message: "Invalid or expired token"
+            message: "Invalid or expired token , Please Login Again",
+            redirectto: "AuthFailed"
         });
     }
     return res.status(500).json({

@@ -21,7 +21,7 @@ const alarmEventSchema = new mongoose.Schema(
       required: true
     },
 
-    // 🔥 dynamic field (temperature, pressure, etc)
+    //for  dynamic field (temperature, pressure, etc)
     field: {
       type: String,
       required: true
@@ -34,15 +34,13 @@ const alarmEventSchema = new mongoose.Schema(
 
     actualValue: Number,
 
-    // 🔥 store full threshold object
+    // store full threshold object
     threshold: {
       high: Number,
       low: Number
     },
 
-    /* threshold:{ 
-    type: Number
-    } */
+  
     status: {
       type: String,
       enum: ["active", "acknowledged", "resolved"],
