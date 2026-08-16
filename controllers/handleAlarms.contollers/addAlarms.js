@@ -92,7 +92,7 @@ function getBreach(value , machineType , field , thresholdvalue) {
   const highvalue = Number(thresholdvalue.high)
   const haslowvalue = thresholdvalue.low ? true : false;
   
-  console.log(`checks : ${ value} , ${highvalue}`)
+
   if( (value < thresholdvalue.high) ||  ( haslowvalue && value > thresholdvalue.low) ){
      if( value >= (highvalue - 2)){
         return { severity: "critical" , direction: "high", limit: thresholdvalue.high, message: CRITICAL_WARNING_CONFIG[machineType][field].highCritical }
@@ -128,8 +128,6 @@ async function  addalarms( machine, currentdata){
 
       const limits =  threshold.get(key);
 
-  
-       console.log(key , limits)
       const value = currentdata[key];
       const obj = getBreach(value , machine.machineType , key , limits);
       
@@ -176,7 +174,9 @@ async function  addalarms( machine, currentdata){
     }
         
       }catch(err){
-           console.log(`alarm couldn't  be add : ${err.message}`)
+        return res.status(500).json({
+          message: "internal server error  , alarm couldn't be saved"
+        })
       }
 }
 

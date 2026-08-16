@@ -6,9 +6,7 @@ async function getDashboard(req, res) {
   try {
     const companyId = req.company._id;
 
-    //  const io = req.app.get("io"); //io instance
 
-    //  Machines
     const machines = await Machine.find({ companyId: companyId });
     
     const totalMachines = machines.length;
@@ -22,7 +20,7 @@ async function getDashboard(req, res) {
       else stopped++;
     });
 
-    // Active alarms
+   
     const activeAlarms = await AlarmEvent.find({
       companyId,
       status: "active"
@@ -30,10 +28,9 @@ async function getDashboard(req, res) {
       .sort({ createdAt: -1 })
       .limit(5);
 
-    // Stats
+  
     const alarmCount = activeAlarms.length;
 
-    // telemetry: --
     const telemetry = machines.map((m) => ({
       machineName: m.machineName,
       state: m.isActive ? "Running" : "Stopped"
@@ -65,10 +62,9 @@ async function getDashboard(req, res) {
 
     res.status(200).json(resData);
 
-       // 👇 ALSO emit real-time update
-    // io.emit("dashboardUpdate", resData);
+  
   } catch (err) {
-    console.error(err);
+ 
     res.status(500).json({ message: "Server error" });
   }
 }

@@ -3,9 +3,13 @@ const NotificationModel = require('../../models/AdminNotification.js')
 async function Accept(req , res){
 
    try{
-    
+
+
     const Notification = await NotificationModel.findOneAndUpdate({
            _id: req.body._id,
+           beforeCompanyId:req.company._id,
+           adminId:req.user._id,
+           status: "PENDING",
     },{
         status: "APPROVED",
         adminResponse: req.body.message,
@@ -18,10 +22,10 @@ async function Accept(req , res){
         return res.status(422).json({
             message: "Notification Not Found",
         })
-    }
-     
+    }   
+
     const UpdateUser = await UserModel.findOneAndUpdate({
-        _id : req.user._id,
+        _id : Notification.operatorId,
     },{
        companyId: Notification.afterCompanyId,
     },{
@@ -45,6 +49,9 @@ async function Reject(req , res){
     
     const Notification = await NotificationModel.findOneAndUpdate({
            _id: req.body._id,
+           beforeCompanyId:req.company._id,
+           adminId:req.user._id,
+           status: "PENDING",
     },{
         status: "REJECTED",
         adminResponse: req.body.message,

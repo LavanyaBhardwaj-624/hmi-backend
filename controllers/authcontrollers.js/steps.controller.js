@@ -6,9 +6,9 @@ const validator = require('validator')
 const Machine = require('../../models/machine.model.js')
 const threshold = require('../../models/threshold.model.js')
 const UserModel = require('../../models/user.model.js');
-/** Auth User middleware */
+
 const requiredFields = ['contactemail', 'name', 'contactname', 'location'];
-/** the function only one user is logged in  */
+
 async function CreateCompany( req , res ){
 
     try{
@@ -30,7 +30,7 @@ async function CreateCompany( req , res ){
         }
      const user = req.user;
      const UserId = req.user._id;
-     console.log(user)
+
      if( user.companyId ){
       return res.status(409).json({
         description: "Conflict",
@@ -68,14 +68,14 @@ async function CreateCompany( req , res ){
       })
 
     }catch(err){
-       console.log("CREATE COMPANY ERROR:", err);
+   
         return res.status(500).json({
             message:"server error",
         })
     }
 }
 
-/** Auth User middleware */
+
 async function AddMachineType( req , res , next ){
 
     try{
@@ -104,11 +104,11 @@ async function AddMachineType( req , res , next ){
 
 }
 
-/** Auth User Before  */
+
 async function AddMachines(req, res) {
   try {
     const data = req.body.payload;
-    console.log(data)
+   
     if (!Array.isArray(data)) {
       return res.status(400).json({
         message: "Expected array of machines",
@@ -119,7 +119,7 @@ async function AddMachines(req, res) {
    
     const machineDocs = data.map((element) => {
       const [machineType] = element.machine.MachineDetails.split(",");
-      console.log(element);
+    
       return {
         companyId: req.company._id,
         machineType, // cleaner
@@ -130,10 +130,10 @@ async function AddMachines(req, res) {
       };
     });
 
-    // 2️⃣ Insert machines
+  
     const insertedMachines = await Machine.insertMany(machineDocs);
 
-    // 3️⃣ Create configs (thresholds + alarms)
+   
     const configDocs = insertedMachines.map((machine, index) => {
       const config = data[index].config;
 
@@ -157,8 +157,7 @@ async function AddMachines(req, res) {
       returnDocument: 'after',
       setDefaultsOnInsert: true
      });
-    console.log(updateduser);
-    console.log('user set');
+
     return res.status(201).json({
       description: "Ok",
       message: "Machines + configs added successfully",
@@ -166,7 +165,7 @@ async function AddMachines(req, res) {
     });
 
   } catch (err) {
-    console.error(err);
+  
     return res.status(500).json({
       message: "Server error"
     });

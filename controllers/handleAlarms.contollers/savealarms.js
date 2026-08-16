@@ -3,13 +3,13 @@ const alarmModel = require('../../models/alarm.model.js')
 async function Save(req ,res){
 
     const machineId = req.body.machineId
-    const companyId = req.body.companyId
+    const companyId = req.company._id
     const field = req.body.field
     const Id = req.body.Id
     const status = req.body.status
     try{
 
-        const data = await alarmModel.findOneAndUpdate({  _id: Id } ,
+        const data = await alarmModel.findOneAndUpdate({  _id: Id , companyId: companyId} ,
             {
             $set:{
                 status: status,
@@ -40,7 +40,7 @@ async function Save(req ,res){
          return res.status(500).json({
           message: ' internal server error '
         })
-        console.log('err.message: ' + err.message)
+     
     }
 
 }

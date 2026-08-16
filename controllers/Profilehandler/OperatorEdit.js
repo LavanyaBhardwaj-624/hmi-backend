@@ -13,8 +13,8 @@ async function UpdateUser(req , res){
             const UpdateUser = await UserModel.findOneAndUpdate(
                { _id: user._id },
             {
-                name: UserData.name ?? user.name,
-                email: UserData.email ?? user.email,
+                name: UserData.name || user.name,
+                email: UserData.email || user.email,
             },
              { returnDocument: 'after' }
             );
@@ -75,7 +75,7 @@ async function UpdateCompany(req , res){
             message: "Company change Request Sent to Admin"
         })
     }catch(err){
-        console.log(err.message)
+       
         res.status(500).json({
             message: " Internal Server Error! , Request Couldn't be sent",
         })

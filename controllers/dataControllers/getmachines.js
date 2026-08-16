@@ -1,14 +1,6 @@
 const machine = require('../../models/machine.model.js')
 const client = require('../../config/redis.js')
-/** api/data/me:id -> request from frontend
- * 
- * first Authuser -> getmymachines (send macine data to user)
- * 
- * also apply rate limiter (for 5 requests)
-  */
 
-/* when user click on machines tabs -> first request to backend api => /api/machines => first authuser -> 
-   getmymachines. */
 async function getmymachines(req, res) {
     const companyId = req.company._id;
     if (!companyId) {
@@ -36,8 +28,6 @@ async function getmymachines(req, res) {
         }
     );
 
-    //delete the key with this username if machiens are modify(change , inc or dec) in edit api.
-   console.log(machines)
     return res.status(200).json({
         description: "OK",
         message: "Fetched",

@@ -33,7 +33,7 @@ async function Authuser( req , res , next){
 
         const userId = decodedtoken.id;
          
-        const user = await UserModel.findById(userId).select("+password").exec();
+        const user = await UserModel.findById(userId).exec();
      
         if(!user){
             return res.status(404).json({

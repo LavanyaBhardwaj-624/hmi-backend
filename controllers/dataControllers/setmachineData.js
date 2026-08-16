@@ -18,7 +18,9 @@ async function setdata(machine ,machineData){
     })
 
   }catch(err){
-      console.log("internal Failure : " + err.message)
+    return res.status(500).json({
+    message: "internal server error , reading couldn't be stored"
+    })
   }
 }
 

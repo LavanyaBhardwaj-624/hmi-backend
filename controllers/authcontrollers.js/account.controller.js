@@ -6,10 +6,9 @@ const redisClient = require('../../config/redis.js')
 require('dotenv').config();
 
 
-/** First Run User Validate */
 async function CreateAdmin(req, res) {
   try {
-    console.log(req.body)
+  
     const { email, password, name, role } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,20 +27,22 @@ async function CreateAdmin(req, res) {
       { expiresIn: "1h" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict"
+     res.cookie("token", token, {
+     httpOnly: true,
+     secure: process.env.NODE_ENV === "production",
+     sameSite: "lax"
     });
-
+     const userObj = user.toObject();
+    delete userObj.password;
     return res.status(201).json({
+      user: userObj,
       description:"New User Created",
       message: "Admin created successfully",
       redirectto: "/Company",
     }); 
 
   } catch (err) {
-    console.log(err.message);
+   
     return res.status(500).json({ 
       description: "internal Failure",
       message: `${err.message}`
@@ -49,7 +50,7 @@ async function CreateAdmin(req, res) {
   }
 }
 
-/**First run user.validate */
+
 
 async function CreateOperator(req , res){
 
@@ -75,7 +76,7 @@ async function CreateOperator(req , res){
       companyId: company._id,
     });
   
-
+ 
     const token = jwt.sign(
       { id: user._id , companyId: company._id },
       process.env.Private_key,
@@ -85,17 +86,19 @@ async function CreateOperator(req , res){
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict"
+      sameSite: "lax"
     });
-
+    const userObj = user.toObject(); s
+    delete userObj.password;
     return res.status(201).json({
+      user: userObj,
       success: true,
       message: "User created successfully",
       redirectto: "/OperatorLandingPage",
     }); 
 
   } catch (err) {
-    console.log(err.message);
+   
     return res.status(500).json({ 
       result: "Failure",
       Error: `${err.message}`
@@ -131,6 +134,9 @@ async function Login(req, res) {
 
     const ok = await bcrypt.compare(req.body.password, user.password);
 
+    const userObj = user.toObject(); // convert user (monggose object) to plain js
+    delete userObj.password;
+
     if (!ok) {
       return res.status(401).json({
         description:" Unauhtorization failed",
@@ -149,8 +155,10 @@ async function Login(req, res) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax"
     });
+  
     if(!user.companyId)
     return res.status(200).json({
+      user: userObj,
       description: "Ok",
       message: " Please Fill Company details First",
       redirectto: "/Company",
@@ -158,6 +166,7 @@ async function Login(req, res) {
 
     if( user.role === "operator"){
         return res.status(200).json({
+           user: userObj,
            description: "Ok",
             message: "Login Successfully",
             redirectto: "/OperatorLandingPage",
@@ -166,6 +175,7 @@ async function Login(req, res) {
 
     if( user.isComplete === false ){
       return res.status(200).json({
+        user: userObj,
         description:"Ok",
         message: "Please Select your machine types",
         redirectto: "/SelectMachineType",
@@ -173,12 +183,13 @@ async function Login(req, res) {
     }
 
     return res.status(200).json({
+        user: userObj,
         description: "Ok",
         message: "Login Successfully",
         redirectto: "/AdminDashboard",
     })
   } catch (err) {
-    console.log(err.message);
+    
     return res.status(500).json({ error: "Server error " + err });
   }
 }

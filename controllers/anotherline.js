@@ -29,7 +29,7 @@ async function backgroundjob() {
                 await addalarms(machine, machineData);
 
             } catch (err) {
-                console.error(`${machine.machineName}: ${err.message}`);
+            
 
                 await MachineModel.findByIdAndUpdate(machine._id, {
                     status: "offline",

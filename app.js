@@ -9,9 +9,12 @@ const cors = require('cors')
 const backgroundjob = require('./controllers/anotherline.js')
 require('dotenv').config();
 
+const helmet = require('helmet');
+app.use(helmet());
 
+const frontend_url = process.env.Frontend_Url
 app.use(cors({
-  origin: "http://localhost:5173",  
+  origin: frontend_url,
   credentials: true                  
 }));
 app.use( express.json());
@@ -19,9 +22,10 @@ app.use(cookieParser())
 
 const server = http.createServer(app)
 
+
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",  
+    origin: frontend_url,  
     credentials: true                 
   }
 });

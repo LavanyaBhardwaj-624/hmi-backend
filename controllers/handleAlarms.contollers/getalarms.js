@@ -1,8 +1,5 @@
 const alarmModel = require('../../models/alarm.model.js')
 const machineModel = require('../../models/machine.model.js')
-/**
- * authuser -> getalarms
- */
 
 async function getalarms( req , res){
 

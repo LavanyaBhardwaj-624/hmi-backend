@@ -3,14 +3,13 @@ const UserModel = require('../../models/user.model.js')
 const bcrypt = require('bcrypt')
 const validator = require('validator');
 
-/// Run AuthUser before All of them.
 async function ConfirmPass(req , res){
     
     try{
 
-        const user = req.user;
+        const user = await UserModel.findById( req.user._id).select("+password").exec();;
+   
         const oldpass = req.body.oldpassword;
-     
         const Verify = await bcrypt.compare( oldpass , user.password);
 
         if(Verify){
@@ -38,7 +37,7 @@ async function SetPass( req , res){
 
     try{
         const user = req.user;
-        const UserData = req.body.UserData;
+        const UserData = req.body;
         const newPass = UserData.newPassword;
         const ConfirmPass = UserData.confirmPassword;
 
@@ -67,6 +66,7 @@ async function SetPass( req , res){
             })
         }
     }catch(err){
+        console.log(" error : " + err.message)
         return res.status(500).json({
             message: "Internal Server Error",
         })

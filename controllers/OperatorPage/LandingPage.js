@@ -1,14 +1,6 @@
 const machine = require('../../models/machine.model.js')
 const AlarmModel = require('../../models/alarm.model.js')
-/** api/data/me:id -> request from frontend
- * 
- * first Authuser -> getmymachines (send macine data to user)
- * 
- * also apply rate limiter (for 5 requests)
-  */
 
-/* when user click on machines tabs -> first request to backend api => /api/machines => first authuser -> 
-   getmymachines. */
 async function Opmachines(req, res) {
     const companyId = req.company._id;
     if (!companyId) {
@@ -20,10 +12,8 @@ async function Opmachines(req, res) {
   
     const machines = await machine.find({ companyId});
     
-    const alarms = await AlarmModel.find({ 
-        companyId ,
-        status: "active",
-      }).length;
+    const alarms = await AlarmModel.find({ companyId ,status: "active",});
+    const  alarmsCount = alarms.length;
 
     return res.status(200).json({
         description: "OK",
@@ -31,7 +21,7 @@ async function Opmachines(req, res) {
         data:{
             Machines: machines,
             UserName: req.user.name,
-            alarmCount: alarms,
+            alarmCount: alarmsCount,
         }
     });
   }catch(err){
