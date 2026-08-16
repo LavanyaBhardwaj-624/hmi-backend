@@ -53,7 +53,9 @@ async function SetPass( req , res){
             const UpdateUser = await UserModel.findOneAndUpdate({
                 _id: user._id
             },{
+                $set:{
                 password: hashedPassword,
+                }
             },{
                 returnDocument: 'after',
             })

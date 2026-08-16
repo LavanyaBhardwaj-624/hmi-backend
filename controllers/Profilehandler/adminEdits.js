@@ -25,10 +25,12 @@ async function EditAdmin( req , res){
         const UpdateCompany = await CompanyModel.findOneAndUpdate(
            { _id: company._id },
         {
+          $set:{
           contactemail: Changes.companyEmail || company.contactemail,
           contactname: Changes.companyContactName || company.contactname,
           name: Changes.companyName || company.name,
           location: Changes.location || company.location,
+          }
         },
           { returnDocument: 'after' }
         );

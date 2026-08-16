@@ -4,7 +4,7 @@ const validate = require('../middleware/user.validate.js');
 const authuser = require('../middleware/AuthUser.js');
 const Account = require('../controllers/authcontrollers.js/account.controller.js');
 const steps = require('../controllers/authcontrollers.js/steps.controller.js')
-const ratelimmiter = require('../middleware/rateLimiter.js');
+
 const ratelimiter = require('../middleware/rateLimiter.js');
 const Permissions = require('../middleware/Permission.js')
 /**

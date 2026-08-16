@@ -52,7 +52,9 @@ async function CreateCompany( req , res ){
      const newuser = await User.findByIdAndUpdate(
         UserId , 
         {companyId: company._id},
-        {new: true},
+        {
+          returnDocument: "after",
+        },
      )
 
      res.clearCookie("token");
@@ -65,6 +67,7 @@ async function CreateCompany( req , res ){
 
       return res.status(201).json({
         message: 'Company created successfully',
+        companyId: company.companyId, 
       })
 
     }catch(err){

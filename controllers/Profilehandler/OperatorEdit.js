@@ -13,8 +13,10 @@ async function UpdateUser(req , res){
             const UpdateUser = await UserModel.findOneAndUpdate(
                { _id: user._id },
             {
+            $set:{
                 name: UserData.name || user.name,
                 email: UserData.email || user.email,
+            }
             },
              { returnDocument: 'after' }
             );
@@ -40,7 +42,7 @@ async function UpdateCompany(req , res){
 
         const company = req.company;
         const CompanyDetail = req.body.CompanyData;
-        const companyTochange = await CompanyModel.findOne({
+        const companychange = await CompanyModel.findOne({
              companyId: CompanyDetail.companyId,
             selectedMachineTypes: {
                $exists: true,
@@ -48,27 +50,31 @@ async function UpdateCompany(req , res){
             },
            })
 
-        if(!companyTochange){
+        if(!companychange){
             return res.status(400).json({
                 message: `Company Doesn't exist . Please Verify ID of Company where you want to change
                           Or it may not have any Machine Yet.`
             })
         }
 
-        const id = companyTochange._id;
-        const UpdateCompany = await CompanyModel.findOneAndUpdate({
-            _id : company._id,
-        },{
-            companyTochange: id,
-        },{
-            returnDocument: 'after'
-        })
+        const id = companychange._id;
 
-        const notify = await AdminNotificationModel.create({
+        
+        const notify = await AdminNotificationModel.findOneAndUpdate({
             adminId: company.adminId,
             operatorId: req.user._id,
             beforeCompanyId: company._id,
-            afterCompanyId: id,
+            status: "PENDING"
+        },{
+          $set: {
+           adminId: company.adminId,
+           operatorId: req.user._id,
+           beforeCompanyId: company._id,
+           afterCompanyId: id,
+           }
+        },{
+             upsert: true,
+             returnDocument: "after" 
         })
 
         return res.status(200).json({

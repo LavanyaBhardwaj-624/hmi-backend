@@ -45,10 +45,7 @@ const companySchema = new mongoose.Schema(
     type: String,
     required: true
     },
-    comapnyTochange:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
-    }
+
   },
   { timestamps: true }
 );
