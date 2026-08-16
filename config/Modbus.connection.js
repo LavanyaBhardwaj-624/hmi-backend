@@ -46,7 +46,7 @@ async function connectPLC(machine) {
         return machineData;
 
     } catch (err) {
-      
+           console.log(err.message);
     } finally {
         await client.close();
     }
