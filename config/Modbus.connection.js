@@ -2,11 +2,27 @@ const ModbusRTU = require("modbus-serial");
 
 
 const machineFieldMap = {
-    "Boiler Unit": ["Temperature", "Pressure", "Water Level"],
-    "Conveyor Belt": ["Speed", "Load", "Vibration", "Motor Temp"],
-    "Packaging Line": ["Temperature", "Pressure", "Speed", "Load", "Vibration"]
-};
+  "Boiler Unit": [
+    { name: "Temperature", address: 0 },
+    { name: "Pressure", address: 1 },
+    { name: "Water Level", address: 2 }
+  ],
 
+  "Conveyor Belt": [
+    { name: "Speed", address: 3 },
+    { name: "Load", address: 4 },
+    { name: "Vibration", address: 5 },
+    { name: "Motor Temp", address: 6 }
+  ],
+
+  "Packaging Line": [
+    { name: "Temperature", address: 7 },
+    { name: "Pressure", address: 8 },
+    { name: "Speed", address: 9 },
+    { name: "Load", address: 10 },
+    { name: "Vibration", address: 11 }
+  ]
+};
 //authUser -> modbusconnection -> setdata
 
 function extraction(machine) {
@@ -19,36 +35,46 @@ function extraction(machine) {
 
 async function connectPLC(machine) {
     const client = new ModbusRTU();
-    try {
-        const obj = extraction(machine);
 
-        await client.connectTCP(obj.IpAddress, {
-            port: obj.Port
+    try {
+        // 1. Connect
+        await client.connectTCP(machine.IpAddress, {
+            port: machine.Port
         });
 
-        client.setID(1);
+        client.setID(machine.unitId || 1);
 
-        const fields = machineFieldMap[obj.machineType];
+        const config = machineFieldMap[machine.machineType];
 
-        if (!fields) {
-           throw new Error("Invalid machine type"); 
+        if (!config) {
+            throw new Error("Invalid machine type");
         }
 
-        const response = await client.readHoldingRegisters(0, fields.length);
-
         
+        const addresses = config.map(f => f.address);
+        const minAddr = Math.min(...addresses);
+        const maxAddr = Math.max(...addresses);
+        const length = maxAddr - minAddr + 1;
+
+       
+        const response = await client.readHoldingRegisters(minAddr, length);
+
         const machineData = {};
 
-        fields.forEach((field, index) => {
-            machineData[field] = response.data[index];
+        config.forEach(field => {
+            const index = field.address - minAddr;
+            machineData[field.name] = response.data[index];
         });
 
         return machineData;
 
     } catch (err) {
-           console.log(err.message);
+        console.error("Modbus Error:", err.message);
+        return null;
     } finally {
-        await client.close();
+        if (client.isOpen) {
+            client.close();
+        }
     }
 }
 

@@ -130,6 +130,7 @@ async function AddMachines(req, res) {
         Location: element.machine.Location,
         IpAddress: element.machine.IpAddress,
         Port: element.machine.Port,
+        unitId: element.machine.unitId,
       };
     });
 

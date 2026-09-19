@@ -7,26 +7,11 @@ async function getmymachines(req, res) {
       return res.status(400).json({ description: "Bad Request", message: "Missing companyId" });
     }
 
-    const cacheKey = `company:${companyId}:machines`;
 
    try{
-    const cachedMachines = await client.get(cacheKey);
-
-    if (cachedMachines) {
-        return res.status(200).json({
-            description: "OK",
-            message: "Fetched from Redis",
-            data: JSON.parse(cachedMachines)
-        });
-    }
 
    
-    const machines = await machine.find({ companyId, isActive: true});
-   
-    await client.set(cacheKey, JSON.stringify(machines),{
-            EX: 86400
-        }
-    );
+    const machines = await machine.find({ companyId});
 
     return res.status(200).json({
         description: "OK",

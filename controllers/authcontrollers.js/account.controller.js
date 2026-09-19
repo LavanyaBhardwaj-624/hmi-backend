@@ -88,7 +88,7 @@ async function CreateOperator(req , res){
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax"
     });
-    const userObj = user.toObject(); s
+    const userObj = user.toObject(); 
     delete userObj.password;
     return res.status(201).json({
       user: userObj,
@@ -134,7 +134,7 @@ async function Login(req, res) {
 
     const ok = await bcrypt.compare(req.body.password, user.password);
 
-    const userObj = user.toObject(); // convert user (monggose object) to plain js
+    const userObj = user.toObject(); // convert user (mongose object) to plain js
     delete userObj.password;
 
     if (!ok) {

@@ -37,6 +37,11 @@ const machineSchema = new mongoose.Schema(
     lastSeen: {
     type: Date,
     default: Date.now
+    },
+    unitId:{
+      type: Number,
+      require: true,
+      min: 1,
     }
   },
   { timestamps: true }

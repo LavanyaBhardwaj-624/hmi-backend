@@ -67,14 +67,15 @@ async function connections(){
          console.log(' connected to db');
 
          const port = process.env.Port;
-         server.listen(port, () => {
+         
+         server.listen(port, "0.0.0.0", () => {
            console.log(`Server running on port ${port}`);
          
            setInterval(async () => {
               try {
                 await backgroundjob();
               } catch (err) {
-                console.error(err);
+                console.log(err.message);
               }
             }, 5000);
  });
